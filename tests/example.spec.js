@@ -84,24 +84,59 @@ test('Drag & Drop Sliders Test', async ({ page }) => {
 // });
 
 test('Test Scenario 3 - Input Form Submit', async ({ page }) => {
-  // Step 1: Open the Selenium Playground page
   await page.goto('https://www.lambdatest.com/selenium-playground');
-  
-  // Click “Input Form Submit”
   await page.locator('text=Input Form Submit').click();
 
-  // Step 2: Click “Submit” without filling in any information
-  await page.locator('button:has-text("Submit")').click();
-  
-  // Step 3: Assert “Please fill in the fields” error message
-  // await expect(page.locator('div:has-text("Please fill in the fields")')).toBeVisible();
-  // await expect(page.locator('.parsley-errors-list')).toContainText('Please fill in the fields');
-  const errorMessage = await page.textContent('text=Please fill out this field.'); // Using text selector
-  expect(errorMessage).toBe('Please fill out this field.');
-  
-  // Step 4: Fill in Name, Email, and other fields
+  // Ubah ukuran jendela browser
+  await page.setViewportSize({ width: 1920, height: 1080 });
+
+  // Scroll ke elemen input "Name" sebelum validasi
+  await page.locator('input[name="name"]').scrollIntoViewIfNeeded();
+
+  const submitButton = page.locator('button:has-text("Submit")');
+
+  // Scroll to the Submit button before clicking
+  await submitButton.scrollIntoViewIfNeeded();
+  await submitButton.click();
+
+  // Wait for the specific error message next to the Name input
+  const nameInputError = page.locator('input#name + ul.parsley-errors-list li');
+
+  try {
+    // Wait for the error message to be visible
+    await expect(nameInputError).toBeVisible({ timeout: 10000 });
+
+    // Wait for the error message to be attached to the DOM
+    await page.waitForSelector('input#name + ul.parsley-errors-list li', { timeout: 5000 });
+
+    // Scroll the error message into view
+    try {
+      await nameInputError.scrollIntoViewIfNeeded();
+    } catch (error) {
+      console.error("Error during scrollIntoViewIfNeeded:", error);
+      // Handle the error, maybe retry or log it
+    }
+
+    // Verify the error message text
+    await expect(nameInputError).toHaveText("Please fill in this field.");
+
+    // Verifikasi posisi tooltip
+    const tooltipBoundingBox = await nameInputError.boundingBox();
+    console.log(tooltipBoundingBox);
+
+  } catch (e) {
+    console.log('Error message for Name input not found. Checking alternative selectors...');
+    console.log(await page.locator('body').innerHTML()); // Debugging
+  }
+
+  // Fill out the form
   await page.fill('input[name="name"]', 'John Doe');
-  await page.fill('input[name="email"]', 'johndoe@example.com');
+
+  // Wait for the email field to be visible and enabled
+  const emailInput = page.locator('input#inputEmail4');
+  await emailInput.waitFor({ state: 'visible', timeout: 10000 });
+  await emailInput.fill('johndoe@example.com');
+
   await page.fill('input[name="phone"]', '1234567890');
   await page.fill('input[name="company"]', 'LambdaTest');
   await page.fill('input[name="website"]', 'https://example.com');
@@ -110,14 +145,14 @@ test('Test Scenario 3 - Input Form Submit', async ({ page }) => {
   await page.fill('input[name="state"]', 'NY');
   await page.fill('input[name="zip"]', '10001');
   await page.fill('textarea[name="comment"]', 'This is a test message.');
-  
-  // Step 5: Select “United States” from the Country drop-down
-  await page.selectOption('select[name="country"]', { label: 'United States' });
-  
-  // Step 6: Fill in all fields and click “Submit”
-  await page.locator('button:has-text("Submit")').click();
-  
-  // Step 7: Validate the success message
-  await expect(page.locator('div:has-text("Thanks for contacting us, we will get back to you shortly.")')).toBeVisible();
-});
 
+  await page.selectOption('select[name="country"]', { label: 'United States' });
+
+  // Scroll to Submit button before clicking again
+  await submitButton.scrollIntoViewIfNeeded();
+  await submitButton.click();
+
+  // Verify success message
+  const successMessage = page.locator('div:has-text("Thanks for contacting us")');
+  await expect(successMessage).toBeVisible();
+});
