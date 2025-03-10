@@ -41,6 +41,7 @@ Page Object Models are located in the src/pages directory.
    ├── package.json
    ├── playwright.config.ts
    └── README.md
+   ```
 
 
 ### 3. Ensure GitHub Secrets are Set
