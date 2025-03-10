@@ -1,6 +1,13 @@
 # playwright-lambda
 playwright lambda test
 
+## Test Cases
+   ```sh
+   TC_001: Validate Simple Form Submission
+   TC_002: Adjust and Validate Slider Value
+   TC_003: Submit Input Form and Validate Error Messages
+   ```
+
 ## Setup
 1. Install dependencies:
    ```sh
