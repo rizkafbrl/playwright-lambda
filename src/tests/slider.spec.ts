@@ -10,7 +10,7 @@ test.describe('Slider Tests', () => {
     await sliderPage.navigateTo('https://www.lambdatest.com/selenium-playground');
     await page.locator('text=Drag & Drop Sliders').click();
 
-    await sliderPage.adjustSlider(98);
+    await sliderPage.adjustSlider(99);
 
     const sliderValue = await sliderPage.getSliderValue();
     expect(sliderValue).toBe('95');

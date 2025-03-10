@@ -7,7 +7,7 @@ export class SliderPage extends BasePage {
     await slider.focus();
     for (let i = 0; i < 80; i++) {
       await slider.press('ArrowRight');
-      await this.page.waitForTimeout(50);
+      await this.page.waitForTimeout(150);
     }
   }
 

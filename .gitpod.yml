@@ -5,5 +5,6 @@ tasks:
     command: npx playwright test
 
 env:
-  LT_USERNAME: your-lambdatest-username
-  LT_ACCESS_KEY: your-lambdatest-access-key
+  LT_USERNAME: rizkafbrl
+  LT_ACCESS_KEY: LT_GLnockZksen5Zx3dbi4qWMXbpGE0NCXAcCYEvPQpXvpDyxF
+  
