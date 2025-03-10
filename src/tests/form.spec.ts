@@ -2,9 +2,11 @@ import { test, expect } from '@playwright/test';
 import { FormPage } from '../pages/formPage';
 import { getBrowser } from '../helpers/lambdaTestHelper';
 
+const runOnLambda = false; // or set it to false based on your requirement
+
 test.describe('Form Tests', () => {
   test('TC_001: Validate Simple Form Submission', async () => {
-    const browser = await getBrowser('TC_001: Validate Simple Form Submission');
+    const browser = await getBrowser('TC_001: Validate Simple Form Submission', runOnLambda);
     const page = await browser.newPage();
     const formPage = new FormPage(page);
     await formPage.navigateTo('https://www.lambdatest.com/selenium-playground');
@@ -20,7 +22,7 @@ test.describe('Form Tests', () => {
   });
 
   test('TC_003: Submit Input Form and Validate Error Messages', async () => {
-    const browser = await getBrowser('TC_003: Submit Input Form and Validate Error Messages');
+    const browser = await getBrowser('TC_003: Submit Input Form and Validate Error Messages', runOnLambda);
     const page = await browser.newPage();
     const formPage = new FormPage(page);
     await formPage.navigateTo('https://www.lambdatest.com/selenium-playground');
