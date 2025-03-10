@@ -19,11 +19,16 @@ export function getLambdaTestCapabilities(testName: string) {
 
 export async function getBrowser(testName: string): Promise<Browser> {
   if (process.env.LT_USERNAME && process.env.LT_ACCESS_KEY) {
+    console.log('Running tests on LambdaTest');
     const capabilities = getLambdaTestCapabilities(testName);
     return await chromium.connect({
       wsEndpoint: `wss://cdp.lambdatest.com/playwright?capabilities=${encodeURIComponent(JSON.stringify(capabilities))}`
     });
+  } else if (process.env.GITPOD_WORKSPACE_ID) {
+    console.log('Running tests on Gitpod');
+    return await chromium.launch();
   } else {
+    console.log('Running tests locally');
     return await chromium.launch();
   }
 }
