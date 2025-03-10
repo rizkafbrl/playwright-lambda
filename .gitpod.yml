@@ -1,0 +1,7 @@
+tasks:
+  - init: npm install
+    command: npm run test
+
+env:
+  LT_USERNAME: your-lambdatest-username
+  LT_ACCESS_KEY: your-lambdatest-access-key

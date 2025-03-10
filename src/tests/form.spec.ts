@@ -1,8 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { FormPage } from '../pages/formPage';
+import { getBrowser } from '../helpers/lambdaTestHelper';
 
 test.describe('Form Tests', () => {
-  test('TC_001: Validate Simple Form Submission', async ({ page }) => {
+  test('TC_001: Validate Simple Form Submission', async () => {
+    const browser = await getBrowser('TC_001: Validate Simple Form Submission');
+    const page = await browser.newPage();
     const formPage = new FormPage(page);
     await formPage.navigateTo('https://www.lambdatest.com/selenium-playground');
     await page.locator('text=Simple Form Demo').click();
@@ -12,24 +15,25 @@ test.describe('Form Tests', () => {
 
     const displayedMessage = await formPage.getDisplayedMessage();
     expect(displayedMessage).toBe(inputMessage);
+
+    await browser.close();
   });
 
-  test('TC_003: Submit Input Form and Validate Error Messages', async ({ page }) => {
+  test('TC_003: Submit Input Form and Validate Error Messages', async () => {
+    const browser = await getBrowser('TC_003: Submit Input Form and Validate Error Messages');
+    const page = await browser.newPage();
     const formPage = new FormPage(page);
     await formPage.navigateTo('https://www.lambdatest.com/selenium-playground');
     await page.locator('text=Input Form Submit').click();
 
-    // Step 2: Click "Submit" without filling in any information in the form
     await formPage.ensureElementVisible('button:has-text("Submit")');
     await page.locator('button:has-text("Submit")').click();
 
-    // Step 3: Assert "Please fill in the fields" error message
     const errorMessage = await formPage.getErrorMessage();
     if (errorMessage) {
       expect(errorMessage).toBe('Please fill in the fields');
     }
 
-    // Step 4: Fill in Name, Email, and other fields
     const formData = {
       name: 'Rizka Febrila',
       email: 'rizkafbrl@gmail.com',
@@ -41,13 +45,14 @@ test.describe('Form Tests', () => {
       state: 'JKT',
       zip: '10001',
       comment: 'This is a test message.',
-      country: 'United States' // Step 5: Select "United States" from the Country drop-down
+      country: 'United States'
     };
 
     await formPage.submitForm(formData);
 
-    // Step 7: Validate the success message
     const successMessage = await formPage.getSuccessMessage();
     expect(successMessage).toBe('Thanks for contacting us, we will get back to you shortly.');
+
+    await browser.close();
   });
 });
