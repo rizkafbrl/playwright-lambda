@@ -1,6 +1,8 @@
 tasks:
   - init: npm install
     command: npm run test
+  - name: Run Tests
+    command: npx playwright test
 
 env:
   LT_USERNAME: your-lambdatest-username
