@@ -15,7 +15,9 @@ export class FormPage extends BasePage {
       if (key === 'country') {
         await this.page.locator(`select[name="${key}"]`).selectOption({ label: value as string });
       } else {
-        await this.page.locator(`input[name="${key}"]`).fill(value);
+        const inputLocator = this.page.locator(`input[name="${key}"]`).filter({ hasText: value });
+        await inputLocator.waitFor({ state: 'visible', timeout: 5000 });
+        await inputLocator.fill(value);
       }
     }
     await this.page.locator('button:has-text("Submit")').click();
