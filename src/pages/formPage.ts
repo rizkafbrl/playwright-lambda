@@ -15,7 +15,7 @@ export class FormPage extends BasePage {
       if (key === 'country') {
         await this.page.locator(`select[name="${key}"]`).selectOption({ label: value as string });
       } else {
-        const inputLocator = this.page.locator(`input[name="${key}"]`).filter({ hasText: value });
+        const inputLocator = this.page.locator(`input[name="${key}"]`);
         await inputLocator.waitFor({ state: 'visible', timeout: 5000 });
         await inputLocator.fill(value);
       }
@@ -24,10 +24,10 @@ export class FormPage extends BasePage {
   }
 
   async getErrorMessage() {
-    return this.page.locator('input[name="name"] + ul.parsley-errors-list li').textContent();
+    return this.page.locator('div:has-text("Please fill in the fields")').textContent();
   }
 
   async getSuccessMessage() {
-    return this.page.locator('div:has-text("Thanks for contacting us")').textContent();
+    return this.page.locator('div:has-text("Thanks for contacting us, we will get back to you shortly.")').textContent();
   }
 }
