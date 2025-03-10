@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -17,8 +17,19 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Set LambdaTest environment variables
+      run: |
+        echo "LT_USERNAME=${{ secrets.LT_USERNAME }}" >> $GITHUB_ENV
+        echo "LT_ACCESS_KEY=${{ secrets.LT_ACCESS_KEY }}" >> $GITHUB_ENV
     - name: Run Playwright tests
-      run: npx playwright test
+      run: |
+        if [ -z "$LT_USERNAME" ] || [ -z "$LT_ACCESS_KEY" ]; then
+          echo "Running tests locally"
+          npx playwright test
+        else
+          echo "Running tests on LambdaTest"
+          npx playwright test
+        fi
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
