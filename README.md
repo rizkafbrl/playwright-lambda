@@ -22,6 +22,10 @@ playwright lambda test
    ```sh
    npx playwright test src/tests/form.spec.ts -g "TC_001: Validate Simple Form Submission"
 
+6. Running on local with lamda as the cloud env
+   ```sh
+   npx playwright test --lambda
+
 ## Writing Tests
 Tests are located in the src/tests directory.
 Page Object Models are located in the src/pages directory.

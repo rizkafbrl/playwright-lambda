@@ -17,18 +17,21 @@ export function getLambdaTestCapabilities(testName: string) {
   };
 }
 
-export async function getBrowser(testName: string): Promise<Browser> {
-  if (process.env.LT_USERNAME && process.env.LT_ACCESS_KEY) {
-    console.log('Running tests on LambdaTest');
+export async function getBrowser(testName: string, runOnLambda: boolean): Promise<Browser> {
+  if (runOnLambda) {
     const capabilities = getLambdaTestCapabilities(testName);
-    return await chromium.connect({
-      wsEndpoint: `wss://cdp.lambdatest.com/playwright?capabilities=${encodeURIComponent(JSON.stringify(capabilities))}`
-    });
+    const wsEndpoint = `wss://cdp.lambdatest.com/playwright?capabilities=${encodeURIComponent(JSON.stringify(capabilities))}`;
+    console.log(`Running tests on LambdaTest as user: ${process.env.LT_USERNAME}`);
+    console.log(`WebSocket Endpoint: ${wsEndpoint}`);
+    console.log(`Command to run: npx playwright test --lambda`);
+    return await chromium.connect({ wsEndpoint });
   } else if (process.env.GITPOD_WORKSPACE_ID) {
     console.log('Running tests on Gitpod');
+    console.log(`Command to run: npx playwright test`);
     return await chromium.launch();
   } else {
     console.log('Running tests locally');
+    console.log(`Command to run: npx playwright test`);
     return await chromium.launch();
   }
 }
