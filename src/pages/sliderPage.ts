@@ -1,8 +1,9 @@
 import { BasePage } from './basePage';
+import { sliderPageLocators } from '../../locators/sliderPageLocators.ts';
 
 export class SliderPage extends BasePage {
   async adjustSlider(targetValue: number) {
-    const slider = this.page.locator("input[value='15']");
+    const slider = this.page.locator(sliderPageLocators.sliderInput);
     await slider.focus();
     for (let i = 0; i < 80; i++) {
       await slider.press('ArrowRight');
@@ -11,6 +12,6 @@ export class SliderPage extends BasePage {
   }
 
   async getSliderValue() {
-    return this.page.locator("#rangeSuccess").textContent();
+    return this.page.locator(sliderPageLocators.sliderValueDisplay).textContent();
   }
 }
