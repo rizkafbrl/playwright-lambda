@@ -4,7 +4,7 @@ import { getBrowser } from '../helpers/lambdaTestHelper';
 
 const runOnLambda = false; // or set it to false based on your requirement
 
-test.describe('Form Tests', () => {
+test.describe('Scenario: Form Tests', () => {
   test('TC_001: Validate Simple Form Submission', async () => {
     const browser = await getBrowser('TC_001: Validate Simple Form Submission', runOnLambda);
     const page = await browser.newPage();
