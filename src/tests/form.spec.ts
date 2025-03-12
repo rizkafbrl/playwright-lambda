@@ -37,12 +37,12 @@ test.describe('Scenario: Form Tests', () => {
     }
 
     const formData = {
-      name: 'Rizka Febrila',
-      email: 'rizkafbrl@gmail.com',
+      name: 'Jane DOe',
+      email: 'janedoe@gmail.com',
       phone: '1234567890',
       company: 'LambdaTest',
       website: 'https://example.com',
-      address: 'Apt. Puri Park View',
+      address: 'Avenue Street',
       city: 'Jakarta',
       state: 'JKT',
       zip: '10001',
