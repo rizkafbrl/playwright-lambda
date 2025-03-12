@@ -37,7 +37,7 @@ test.describe('Scenario: Form Tests', () => {
     }
 
     const formData = {
-      name: 'Jane DOe',
+      name: 'Jane Doe',
       email: 'janedoe@gmail.com',
       phone: '1234567890',
       company: 'LambdaTest',
